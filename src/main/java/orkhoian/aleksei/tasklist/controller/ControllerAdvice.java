@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import orkhoian.aleksei.tasklist.domain.exception.AccessDeniedException;
 import orkhoian.aleksei.tasklist.domain.exception.ExceptionBody;
+import orkhoian.aleksei.tasklist.domain.exception.ImageUploadException;
 import orkhoian.aleksei.tasklist.domain.exception.ResourceNotFoundException;
 
 import java.util.List;
@@ -74,6 +75,13 @@ public class ControllerAdvice {
     public ExceptionBody handleAuthentication(AuthenticationException ex) {
         log.warn(ex.getMessage());
         return new ExceptionBody("Authentication failed: " + ex.getMessage());
+    }
+
+    @ExceptionHandler(ImageUploadException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionBody handleImageUpload(ImageUploadException ex) {
+        log.warn(ex.getMessage());
+        return new ExceptionBody(ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

@@ -1,0 +1,35 @@
+name: gradle-build
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  checkstyle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GHUB_TOKEN }}
+          script: |
+            const title = context.payload.pull_request.title.toLowerCase();
+            const regex = /^(feature|bugfix|hotfix)\/.+$/i;
+            if (!regex.test(title)) {
+              core.setFailed('Invalid PR title. PR title should be in the format of <type>/<description>');
+            }
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+          cache: 'gradle'
+      - name: Build
+        run: gradle build --configuration-cache
+      - name: Run tests
+        run: ./gradlew test

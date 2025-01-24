@@ -1,5 +1,6 @@
 package orkhoian.aleksei.tasklist.config;
 
+import io.minio.MinioClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import orkhoian.aleksei.tasklist.security.JwtTokenFilter;
 import orkhoian.aleksei.tasklist.security.JwtTokenProvider;
+import orkhoian.aleksei.tasklist.service.props.MinioProperties;
 
 @Configuration
 @EnableWebSecurity
@@ -30,10 +32,12 @@ public class ApplicationConfig {
     public static final String DOCKS_URI = "/v3/api-docs/**";
 
     private final JwtTokenProvider tokenProvider;
+    private final MinioProperties minioProperties;
 
     @Autowired
-    public ApplicationConfig(@Lazy JwtTokenProvider tokenProvider) {
+    public ApplicationConfig(@Lazy JwtTokenProvider tokenProvider, MinioProperties minioProperties) {
         this.tokenProvider = tokenProvider;
+        this.minioProperties = minioProperties;
     }
 
     @Bean
@@ -44,6 +48,14 @@ public class ApplicationConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public MinioClient minioClient() {
+        return MinioClient.builder()
+            .endpoint(minioProperties.getUrl())
+            .credentials(minioProperties.getAccessKey(), minioProperties.getSecretKey())
+            .build();
     }
 
     @Bean
