@@ -29,6 +29,7 @@ dependencies {
 	val spring = "3.4.0"
 	val hibernate = "8.0.1.Final"
 	val jakarta = "3.1.0"
+	val minio = "8.5.14"
 	val liquibase = "4.30.0"
 	val springdoc = "2.6.0"
 	val jjwt = "0.12.6"
@@ -37,9 +38,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-configuration-processor:${spring}")
 	implementation("org.hibernate.validator:hibernate-validator:${hibernate}")
 	implementation("jakarta.validation:jakarta.validation-api:${jakarta}")
+	implementation("io.minio:minio:${minio}")
 	implementation("org.liquibase:liquibase-core:${liquibase}")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc}")
 	implementation("io.jsonwebtoken:jjwt-api:${jjwt}")
