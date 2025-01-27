@@ -9,6 +9,6 @@ RUN gradle clean build -x test --no-daemon
 
 FROM openjdk:21-jdk-slim
 WORKDIR /app
-COPY --from=TEMP_BUILD_IMAGE /app/build/libs/tasklist-0.0.1-SNAPSHOT.jar application.jar
+COPY --from=TEMP_BUILD_IMAGE /app/build/libs/tasklist-0.1.0.jar application.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "application.jar"]

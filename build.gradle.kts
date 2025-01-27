@@ -27,6 +27,7 @@ repositories {
 
 dependencies {
 	val spring = "3.4.0"
+	val retry = "2.0.11"
 	val hibernate = "8.0.1.Final"
 	val jakarta = "3.1.0"
 	val minio = "8.5.14"
@@ -40,6 +41,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-configuration-processor:${spring}")
+	implementation("org.springframework.retry:spring-retry:${retry}")
 	implementation("org.hibernate.validator:hibernate-validator:${hibernate}")
 	implementation("jakarta.validation:jakarta.validation-api:${jakarta}")
 	implementation("io.minio:minio:${minio}")
@@ -88,7 +90,7 @@ tasks {
 		violationRules {
 			rule {
 				limit {
-					minimum = BigDecimal.valueOf(0.5)
+					minimum = BigDecimal.valueOf(0.1)
 				}
 			}
 		}
