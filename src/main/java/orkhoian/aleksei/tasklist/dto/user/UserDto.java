@@ -24,4 +24,6 @@ public class UserDto {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull(groups = OnCreate.class)
     private String passwordConfirmation;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String apiKey;
 }

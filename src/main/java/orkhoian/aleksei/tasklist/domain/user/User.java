@@ -35,6 +35,7 @@ public class User implements Serializable {
     private String password;
     @Transient
     private String passwordConfirmation;
+    private String apiKey;
 
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)

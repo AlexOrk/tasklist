@@ -19,8 +19,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findAllByUserId(@Param("userId") Long userId);
 
     @Query(value = """
-            SELECT * FROM tasks t 
-            WHERE t.expiration_date IS NOT NULL 
+            SELECT * FROM tasks t
+            WHERE t.expiration_date IS NOT NULL
             AND t.expiration_date BETWEEN :start AND :end
             """, nativeQuery = true)
     List<Task> findAllSoonTasks(@Param("start") Timestamp start, @Param("end") Timestamp end);

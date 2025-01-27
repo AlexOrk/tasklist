@@ -4,15 +4,18 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 import orkhoian.aleksei.tasklist.domain.exception.AccessDeniedException;
 import orkhoian.aleksei.tasklist.domain.exception.ExceptionBody;
 import orkhoian.aleksei.tasklist.domain.exception.ImageUploadException;
+import orkhoian.aleksei.tasklist.domain.exception.NulabResponseException;
 import orkhoian.aleksei.tasklist.domain.exception.ResourceNotFoundException;
 
 import java.util.List;
@@ -82,6 +85,21 @@ public class ControllerAdvice {
     public ExceptionBody handleImageUpload(ImageUploadException ex) {
         log.warn(ex.getMessage());
         return new ExceptionBody(ex.getMessage());
+    }
+
+    @ExceptionHandler(NulabResponseException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ExceptionBody handleImageUpload(NulabResponseException ex) {
+        log.warn(ex.getMessage());
+        return new ExceptionBody(ex.getMessage());
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ExceptionBody> handleImageUpload(ResponseStatusException ex) {
+        log.warn(ex.getMessage());
+        return ResponseEntity
+            .status(ex.getStatusCode())
+            .body(new ExceptionBody(ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

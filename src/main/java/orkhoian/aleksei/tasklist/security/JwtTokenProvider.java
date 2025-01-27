@@ -49,35 +49,35 @@ public class JwtTokenProvider {
 
     public String createAccessToken(Long userId, String username, Set<Role> roles) {
         Claims claims = Jwts.claims()
-                .subject(username)
-                .add("id", userId)
-                .add("roles", resolveRoles(roles))
-                .build();
+            .subject(username)
+            .add("id", userId)
+            .add("roles", resolveRoles(roles))
+            .build();
 
         Instant validity = Instant.now()
             .plus(jwtProperties.getAccess(), ChronoUnit.DAYS);
 
         return Jwts.builder()
-                .claims(claims)
-                .expiration(Date.from(validity))
-                .signWith(key)
-                .compact();
+            .claims(claims)
+            .expiration(Date.from(validity))
+            .signWith(key)
+            .compact();
     }
 
     public String createRefreshToken(Long userId, String username) {
         Claims claims = Jwts.claims()
-                .subject(username)
-                .add("id", userId)
-                .build();
+            .subject(username)
+            .add("id", userId)
+            .build();
 
         Instant validity = Instant.now()
-                .plus(jwtProperties.getRefresh(), ChronoUnit.DAYS);
+            .plus(jwtProperties.getRefresh(), ChronoUnit.DAYS);
 
         return Jwts.builder()
-                .claims(claims)
-                .expiration(Date.from(validity))
-                .signWith(key)
-                .compact();
+            .claims(claims)
+            .expiration(Date.from(validity))
+            .signWith(key)
+            .compact();
     }
 
     public JwtResponse refreshUserTokens(String refreshToken) {
@@ -96,14 +96,14 @@ public class JwtTokenProvider {
 
     public boolean isValid(String token) {
         Jws<Claims> claims = Jwts
-                .parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token);
+            .parser()
+            .verifyWith(key)
+            .build()
+            .parseSignedClaims(token);
 
         return claims.getPayload()
-                .getExpiration()
-                .after(new Date());
+            .getExpiration()
+            .after(new Date());
     }
 
     public Authentication getAuthentication(String token) {
@@ -114,27 +114,27 @@ public class JwtTokenProvider {
 
     private List<String> resolveRoles(Set<Role> roles) {
         return roles.stream()
-                .map(Enum::name)
-                .collect(Collectors.toList());
+            .map(Enum::name)
+            .collect(Collectors.toList());
     }
 
     private String getId(String token) {
         return Jwts
-                .parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("id", String.class);
+            .parser()
+            .verifyWith(key)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload()
+            .get("id", String.class);
     }
 
     private String getUsername(String token) {
         return Jwts
-                .parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
+            .parser()
+            .verifyWith(key)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload()
+            .getSubject();
     }
 }

@@ -18,12 +18,18 @@ spring:
     change-log: classpath:liquibase/db.changelog.yaml
     enabled: true
     default-schema: tasklist
+    parameters:
+      nulab-api-key-aleksei: ${NULAB_API_KEY_ALEKSEI}
+      nulab-api-key-john: ${NULAB_API_KEY_JOHN}
 
 security:
   jwt:
     secret: ${JWT_SECRET}
     access: 1
     refresh: 30
+
+client:
+  nulab-uri: ${NULAB_URL}
 
 springdoc:
   override-with-generic-response: false
