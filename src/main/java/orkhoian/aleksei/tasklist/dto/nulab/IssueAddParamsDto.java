@@ -1,13 +1,17 @@
 package orkhoian.aleksei.tasklist.dto.nulab;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.util.UriBuilder;
 import orkhoian.aleksei.tasklist.utils.Utils;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class IssueAddParamsDto {
 
     public static final String PROJECT_ID_PARAM = "projectId";

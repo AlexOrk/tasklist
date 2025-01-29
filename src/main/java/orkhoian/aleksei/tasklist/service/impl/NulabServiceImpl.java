@@ -55,7 +55,7 @@ public class NulabServiceImpl implements NulabService {
         IssueAddParamsDto issueParams = IssueAddParamsDto.builder()
             .projectId(taskParams.getProjectId())
             .issueTypeId(Objects.requireNonNullElse(taskParams.getIssueTypeId(), DEFAULT_ISSUE_TYPE_ID))
-            .priorityId(Objects.requireNonNullElse(taskParams.getIssueTypeId(), DEFAULT_PRIORITY_ID))
+            .priorityId(Objects.requireNonNullElse(taskParams.getPriorityId(), DEFAULT_PRIORITY_ID))
             .summary(taskDto.getTitle())
             .build();
 

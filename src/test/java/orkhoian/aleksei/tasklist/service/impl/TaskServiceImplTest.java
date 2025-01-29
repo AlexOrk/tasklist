@@ -1,5 +1,6 @@
 package orkhoian.aleksei.tasklist.service.impl;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,6 +34,7 @@ public class TaskServiceImplTest {
     private final long id = 1L;
 
     @Test
+    @DisplayName("Get task by id successfully")
     void getById() {
         expectedTask.setId(id);
 
@@ -45,6 +47,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
+    @DisplayName("Get task by id failed")
     void getByIdNotFound() {
         when(taskRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -53,6 +56,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
+    @DisplayName("Get all tasks by user id successfully")
     void getAllByUserId() {
         List<Task> expected = List.of(new Task(), new Task());
 
@@ -64,6 +68,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
+    @DisplayName("Update task successfully")
     void update() {
         expectedTask.setId(id);
         expectedTask.setTitle("title");
@@ -78,6 +83,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
+    @DisplayName("Update task with null status")
     void updateNullStatus() {
         Status expectedStatus = Status.TODO;
         expectedTask.setExpirationDate(LocalDateTime.now());
@@ -89,6 +95,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
+    @DisplayName("Create task successfully")
     void create() {
         Long expectedId = 1L;
 
@@ -105,6 +112,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
+    @DisplayName("Delete task successfully")
     void delete() {
         taskService.delete(id);
         verify(taskRepository).deleteById(id);

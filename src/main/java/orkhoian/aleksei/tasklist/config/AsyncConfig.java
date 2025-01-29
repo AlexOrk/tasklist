@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import orkhoian.aleksei.tasklist.controller.AsyncExceptionHandler;
+import orkhoian.aleksei.tasklist.utils.ExcludeFromJacocoGeneratedReport;
 
 @Configuration
+@ExcludeFromJacocoGeneratedReport
 public class AsyncConfig implements AsyncConfigurer {
 
     private final AsyncExceptionHandler asyncExceptionHandler;

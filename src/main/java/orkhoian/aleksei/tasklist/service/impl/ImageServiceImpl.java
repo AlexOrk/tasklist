@@ -46,7 +46,7 @@ public class ImageServiceImpl implements ImageService {
         try {
             inputStream = file.getInputStream();
         } catch (Exception ex) {
-            throw new ImageUploadException("Exception was thrown while trying to get inputStream : " + ex.getMessage());
+            throw new ImageUploadException("Exception was thrown while trying to get inputStream: " + ex.getMessage());
         }
         saveImage(inputStream, fileName);
         return fileName;
@@ -67,8 +67,8 @@ public class ImageServiceImpl implements ImageService {
 
     private String generateFileName(MultipartFile file) {
         String extension = Objects.requireNonNull(file.getOriginalFilename())
-                .substring(file.getOriginalFilename().lastIndexOf(".") + 1);
-        return UUID.randomUUID() + "." + extension;
+                .substring(file.getOriginalFilename().lastIndexOf("."));
+        return UUID.randomUUID() + extension;
     }
 
     @SneakyThrows

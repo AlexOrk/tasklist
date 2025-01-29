@@ -5,6 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import orkhoian.aleksei.tasklist.domain.user.User;
+import orkhoian.aleksei.tasklist.dto.auth.JwtRefreshDto;
 import orkhoian.aleksei.tasklist.service.AuthService;
 import orkhoian.aleksei.tasklist.service.UserService;
 import orkhoian.aleksei.tasklist.dto.auth.JwtRequest;
@@ -42,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public JwtResponse refresh(String refreshToken) {
-        return jwtTokenProvider.refreshUserTokens(refreshToken);
+    public JwtResponse refresh(JwtRefreshDto refreshDto) {
+        return jwtTokenProvider.refreshUserTokens(refreshDto.getRefreshToken());
     }
 }
