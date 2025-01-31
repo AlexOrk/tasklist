@@ -5,6 +5,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -82,23 +83,31 @@ public class ControllerAdvice {
 
     @ExceptionHandler(ImageUploadException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionBody handleImageUpload(ImageUploadException ex) {
+    public ExceptionBody handleImageUploadException(ImageUploadException ex) {
         log.warn(ex.getMessage());
         return new ExceptionBody(ex.getMessage());
     }
 
     @ExceptionHandler(NulabResponseException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionBody handleImageUpload(NulabResponseException ex) {
+    public ExceptionBody handleNulabResponseException(NulabResponseException ex) {
         log.warn(ex.getMessage());
         return new ExceptionBody(ex.getMessage());
     }
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<ExceptionBody> handleImageUpload(ResponseStatusException ex) {
+    public ResponseEntity<ExceptionBody> handleResponseStatusException(ResponseStatusException ex) {
         log.warn(ex.getMessage());
         return ResponseEntity
             .status(ex.getStatusCode())
+            .body(new ExceptionBody(ex.getMessage()));
+    }
+
+    @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+    public ResponseEntity<ExceptionBody> handleAuthenticationException(AuthenticationCredentialsNotFoundException ex) {
+        log.warn(ex.getMessage());
+        return ResponseEntity
+            .status(HttpStatus.UNAUTHORIZED)
             .body(new ExceptionBody(ex.getMessage()));
     }
 

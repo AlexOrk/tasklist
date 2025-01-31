@@ -35,6 +35,7 @@ dependencies {
 	val springdoc = "2.6.0"
 	val jjwt = "0.12.6"
 	val mapstruct = "1.6.3"
+	val securityTest = "6.4.2"
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
@@ -58,6 +59,7 @@ dependencies {
 	annotationProcessor("org.mapstruct:mapstruct-processor:${mapstruct}")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test:${securityTest}")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testCompileOnly("org.projectlombok:lombok")
 	testAnnotationProcessor("org.projectlombok:lombok")

@@ -1,5 +1,6 @@
 package orkhoian.aleksei.tasklist.dto.nulab;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,7 @@ public class IssueAddParamsDto {
 
     @NotNull
     private Long projectId;
-    @NotNull
+    @NotBlank
     private String summary;
     @NotNull
     private Long issueTypeId;

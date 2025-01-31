@@ -36,10 +36,6 @@ public class NulabController {
 
     @GetMapping("/projects")
     public List<ProjectDto> getProjectList() {
-//        return Utils.executeWithApiKey(() ->
-//            nulabService.getProjectList(Utils.getCurrentUserApiKey(userService)),
-//            Collections.emptyList()
-//        );
         return nulabService.getProjectList(Utils.getCurrentUserApiKey(userService));
     }
 
