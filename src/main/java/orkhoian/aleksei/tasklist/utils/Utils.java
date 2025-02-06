@@ -1,5 +1,6 @@
 package orkhoian.aleksei.tasklist.utils;
 
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import orkhoian.aleksei.tasklist.domain.exception.NulabResponseException;
@@ -22,18 +23,8 @@ public final class Utils {
             return Optional.ofNullable(userService.getById(jwtEntity.getId()).getApiKey())
                 .orElseThrow(() -> new NulabResponseException("User does not have Nulab ApiKey"));
         }
-        throw new RuntimeException("User not authorised!");
+        throw new AuthenticationCredentialsNotFoundException("User not authorised!");
     }
-
-    //todo: do we need a default response? will be better to return an exception info instead?
-//    public static <T> T executeWithApiKey(Supplier<T> action, T fallbackValue) {
-//        try {
-//            return action.get();
-//        } catch (NulabResponseException ex) {
-//            LOG.warn("Authorization failed: {}", ex.getMessage());
-//            return fallbackValue;
-//        }
-//    }
 
     public static void checkFutureDate(String date) {
         try {
@@ -42,10 +33,10 @@ public final class Utils {
             LocalDate today = LocalDate.now();
 
             if (inputDate.isBefore(today)) {
-                throw new IllegalArgumentException("Invalid date. The date entered must be later than now.");
+                throw new IllegalArgumentException("Invalid date. The date entered must be later than now, but was " + date);
             }
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid date format. Expected yyyy-MM-dd.");
+            throw new IllegalArgumentException("Invalid date format. Expected yyyy-MM-dd, but was " + date);
         }
     }
 }

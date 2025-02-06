@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import orkhoian.aleksei.tasklist.domain.exception.ResourceNotFoundException;
 import orkhoian.aleksei.tasklist.domain.user.Role;
 import orkhoian.aleksei.tasklist.domain.user.User;
+import orkhoian.aleksei.tasklist.dto.auth.JwtRefreshDto;
 import orkhoian.aleksei.tasklist.service.UserService;
 import orkhoian.aleksei.tasklist.dto.auth.JwtRequest;
 import orkhoian.aleksei.tasklist.dto.auth.JwtResponse;
@@ -39,7 +40,6 @@ public class AuthServiceImplTest {
     @InjectMocks
     private AuthServiceImpl authService;
 
-    private final long id = 1L;
     private final String username = "username";
     private final String password = "password";
     private final User user = new User();
@@ -52,6 +52,7 @@ public class AuthServiceImplTest {
         String refreshToken = "refresh";
         request.setUsername(username);
         request.setPassword(password);
+        long id = 1L;
         user.setId(id);
         user.setUsername(username);
         user.setRoles(roles);
@@ -92,7 +93,7 @@ public class AuthServiceImplTest {
 
         when(tokenProvider.refreshUserTokens(refreshToken)).thenReturn(expected);
 
-        JwtResponse actual = authService.refresh(refreshToken);
+        JwtResponse actual = authService.refresh(new JwtRefreshDto(refreshToken));
 
         assertEquals(expected, actual);
         verify(tokenProvider).refreshUserTokens(refreshToken);

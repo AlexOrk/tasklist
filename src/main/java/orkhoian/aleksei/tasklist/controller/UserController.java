@@ -1,7 +1,6 @@
 package orkhoian.aleksei.tasklist.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -76,7 +75,7 @@ public class UserController {
     @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
     public TaskDto createTask(
         @PathVariable Long id,
-        @Valid TaskPublishParamsDto params,
+        TaskPublishParamsDto params,
         @Validated(OnCreate.class) @RequestBody TaskDto dto
     ) {
         Task task = taskMapper.toEntity(dto);
@@ -101,6 +100,6 @@ public class UserController {
     @DeleteMapping("/{id}")
     @PreAuthorize("@customSecurityExpression.canAccessUser(#id)")
     public void deleteById(@PathVariable Long id) {
-        userService.delete(id);
+        userService.deleteById(id);
     }
 }

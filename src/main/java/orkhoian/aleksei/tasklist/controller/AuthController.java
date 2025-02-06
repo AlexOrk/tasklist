@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import orkhoian.aleksei.tasklist.domain.user.User;
+import orkhoian.aleksei.tasklist.dto.auth.JwtRefreshDto;
 import orkhoian.aleksei.tasklist.service.AuthService;
 import orkhoian.aleksei.tasklist.service.UserService;
 import orkhoian.aleksei.tasklist.dto.auth.JwtRequest;
@@ -46,7 +47,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public JwtResponse refresh(@RequestBody String refreshToken) {
-        return authService.refresh(refreshToken);
+    public JwtResponse refresh(@Validated @RequestBody JwtRefreshDto refreshDto) {
+        return authService.refresh(refreshDto);
     }
 }

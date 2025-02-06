@@ -1,5 +1,6 @@
 package orkhoian.aleksei.tasklist.service.impl;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,6 +40,7 @@ public class UserServiceImplTest {
     private final User expectedUser = new User();
 
     @Test
+    @DisplayName("Get user by id successfully")
     void getById() {
         expectedUser.setId(id);
 
@@ -51,6 +53,7 @@ public class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Get user by id failed")
     void getByIdNotFound() {
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -59,6 +62,7 @@ public class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Get user by username successfully")
     void getByUsername() {
         expectedUser.setUsername(username);
 
@@ -71,6 +75,7 @@ public class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Get user by username failed")
     void getByUsernameNotFound() {
         when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
 
@@ -79,6 +84,7 @@ public class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Update user successfully")
     void update() {
         expectedUser.setPassword(password);
 
@@ -89,6 +95,7 @@ public class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Check if user is task owner")
     void isTaskOwner() {
         long taskId = 1L;
 
@@ -101,6 +108,7 @@ public class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Create user successfully")
     void create() {
         Set<Role> expectedRoles = Set.of(Role.ROLE_USER);
         expectedUser.setUsername(username);
@@ -117,6 +125,7 @@ public class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Create user failed because user already exists")
     void createExistingUser() {
         expectedUser.setUsername(username);
         expectedUser.setPassword(password);
@@ -130,6 +139,7 @@ public class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Create user failed because passwords are not equals")
     void createNotEqualsPasswords() {
         expectedUser.setUsername(username);
         expectedUser.setPassword(password);
@@ -143,8 +153,9 @@ public class UserServiceImplTest {
     }
 
     @Test
-    void delete() {
-        userService.delete(id);
+    @DisplayName("Delete user successfully")
+    void deleteById() {
+        userService.deleteById(id);
         verify(userRepository).deleteById(id);
     }
 }

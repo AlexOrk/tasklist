@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import orkhoian.aleksei.tasklist.domain.exception.ImageUploadException;
-import orkhoian.aleksei.tasklist.domain.task.TaskImage;
 import orkhoian.aleksei.tasklist.service.ImageService;
 import orkhoian.aleksei.tasklist.service.props.MinioProperties;
 
@@ -30,14 +29,13 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public String upload(TaskImage image) {
+    public String upload(MultipartFile file) {
         try {
             createBucket();
         } catch (Exception ex) {
             throw new ImageUploadException("Image upload failed: " + ex.getMessage());
         }
 
-        MultipartFile file = image.getFile();
         if (file.isEmpty() || file.getOriginalFilename() == null) {
             throw new ImageUploadException("Image must have name");
         }
@@ -46,7 +44,7 @@ public class ImageServiceImpl implements ImageService {
         try {
             inputStream = file.getInputStream();
         } catch (Exception ex) {
-            throw new ImageUploadException("Exception was thrown while trying to get inputStream : " + ex.getMessage());
+            throw new ImageUploadException("Exception was thrown while trying to get inputStream: " + ex.getMessage());
         }
         saveImage(inputStream, fileName);
         return fileName;
@@ -67,8 +65,8 @@ public class ImageServiceImpl implements ImageService {
 
     private String generateFileName(MultipartFile file) {
         String extension = Objects.requireNonNull(file.getOriginalFilename())
-                .substring(file.getOriginalFilename().lastIndexOf(".") + 1);
-        return UUID.randomUUID() + "." + extension;
+                .substring(file.getOriginalFilename().lastIndexOf("."));
+        return UUID.randomUUID() + extension;
     }
 
     @SneakyThrows

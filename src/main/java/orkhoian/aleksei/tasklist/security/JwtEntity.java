@@ -1,6 +1,7 @@
 package orkhoian.aleksei.tasklist.security;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @Data
+@Builder
 @AllArgsConstructor
 public class JwtEntity implements UserDetails {
 

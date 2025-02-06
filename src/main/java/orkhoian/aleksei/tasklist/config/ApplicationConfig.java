@@ -20,10 +20,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import orkhoian.aleksei.tasklist.security.JwtTokenFilter;
 import orkhoian.aleksei.tasklist.security.JwtTokenProvider;
 import orkhoian.aleksei.tasklist.service.props.MinioProperties;
+import orkhoian.aleksei.tasklist.utils.ExcludeFromJacocoGeneratedReport;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@ExcludeFromJacocoGeneratedReport
 public class ApplicationConfig {
 
     public static final String UNAUTHORIZED_MESSAGE = "Unauthorized";
