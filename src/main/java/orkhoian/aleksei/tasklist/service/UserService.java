@@ -14,5 +14,5 @@ public interface UserService {
 
     boolean isTaskOwner(Long userId, Long taskId);
 
-    void delete(Long id);
+    void deleteById(Long id);
 }

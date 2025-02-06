@@ -2,6 +2,7 @@ package orkhoian.aleksei.tasklist.dto.task;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +25,7 @@ public class TaskDto {
 
     @NotNull(groups = OnUpdate.class)
     private Long id;
-    @NotNull(groups = {OnCreate.class, OnUpdate.class})
+    @NotBlank(groups = {OnCreate.class, OnUpdate.class})
     @Length(max = 255)
     private String title;
     @Length(max = 255)

@@ -5,7 +5,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import orkhoian.aleksei.tasklist.domain.exception.ResourceNotFoundException;
 import orkhoian.aleksei.tasklist.domain.user.Role;
+import orkhoian.aleksei.tasklist.service.TaskService;
 import orkhoian.aleksei.tasklist.service.UserService;
 import orkhoian.aleksei.tasklist.security.JwtEntity;
 
@@ -13,10 +15,12 @@ import orkhoian.aleksei.tasklist.security.JwtEntity;
 public class CustomSecurityExpression {
 
     private final UserService userService;
+    private final TaskService taskService;
 
     @Autowired
-    public CustomSecurityExpression(UserService userService) {
+    public CustomSecurityExpression(UserService userService, TaskService taskService) {
         this.userService = userService;
+        this.taskService = taskService;
     }
 
     public boolean canAccessUser(Long id) {
@@ -31,6 +35,10 @@ public class CustomSecurityExpression {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JwtEntity user = (JwtEntity) authentication.getPrincipal();
         Long userId = user.getId();
+
+        if (!taskService.isTaskExists(taskId)) {
+            throw new ResourceNotFoundException("Task not found");
+        }
 
         return userService.isTaskOwner(userId, taskId);
     }

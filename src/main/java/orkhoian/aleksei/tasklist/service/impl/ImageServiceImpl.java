@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import orkhoian.aleksei.tasklist.domain.exception.ImageUploadException;
-import orkhoian.aleksei.tasklist.domain.task.TaskImage;
 import orkhoian.aleksei.tasklist.service.ImageService;
 import orkhoian.aleksei.tasklist.service.props.MinioProperties;
 
@@ -30,14 +29,13 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public String upload(TaskImage image) {
+    public String upload(MultipartFile file) {
         try {
             createBucket();
         } catch (Exception ex) {
             throw new ImageUploadException("Image upload failed: " + ex.getMessage());
         }
 
-        MultipartFile file = image.getFile();
         if (file.isEmpty() || file.getOriginalFilename() == null) {
             throw new ImageUploadException("Image must have name");
         }

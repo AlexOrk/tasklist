@@ -2,6 +2,7 @@ package orkhoian.aleksei.tasklist.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -71,6 +72,7 @@ public class NulabControllerTest {
     }
 
     @Test
+    @DisplayName("Get projects successfully")
     @WithMockJwtUser
     void getProjectList() throws Exception {
         List<ProjectDto> projects = List.of(
@@ -85,6 +87,7 @@ public class NulabControllerTest {
     }
 
     @Test
+    @DisplayName("Get project list failed due to user not authorised")
     void getProjectListFail() throws Exception {
         ExceptionBody response = new ExceptionBody("User not authorised!");
 
@@ -94,22 +97,32 @@ public class NulabControllerTest {
     }
 
     @Test
+    @DisplayName("Get issues successfully")
     @WithMockJwtUser
     void getIssueList() throws Exception {
         List<IssueDto> issues = List.of(
             IssueDto.builder().id(1L).projectId(1L).issueKey("1").summary("Issue 1").build(),
             IssueDto.builder().id(2L).projectId(2L).issueKey("2").summary("Issue 2").build());
 
-        IssueGetParamsDto params = new IssueGetParamsDto();
+        IssueGetParamsDto params = IssueGetParamsDto.builder()
+            .projectId(List.of(1L, 2L))
+            .issueTypeId(List.of(NulabServiceImpl.DEFAULT_ISSUE_TYPE_ID))
+            .statusId(List.of(1L))
+            .build();
 
         when(nulabService.getIssueList(userApiKey, params)).thenReturn(issues);
 
-        mockMvc.perform(get("/api/v1/nulab/issues"))
+        mockMvc.perform(get("/api/v1/nulab/issues")
+                .param(IssueGetParamsDto.PROJECT_ID_PARAM, "1,2")
+                .param(IssueGetParamsDto.ISSUE_TYPE_ID_PARAM, String.valueOf(NulabServiceImpl.DEFAULT_ISSUE_TYPE_ID))
+                .param(IssueGetParamsDto.STATUS_ID_PARAM, "1")
+            )
             .andExpect(status().isOk())
             .andExpect(content().json(objectMapper.writeValueAsString(issues)));
     }
 
     @Test
+    @DisplayName("Get issue list failed due to user not authorised")
     void getIssueListFail() throws Exception {
         ExceptionBody response = new ExceptionBody("User not authorised!");
 
@@ -119,6 +132,7 @@ public class NulabControllerTest {
     }
 
     @Test
+    @DisplayName("Add issue successfully")
     @WithMockJwtUser
     void getIssue() throws Exception {
         IssueDto issue = IssueDto.builder().id(1L).projectId(1L).issueKey("1").summary("Issue 1").build();
@@ -132,6 +146,7 @@ public class NulabControllerTest {
     }
 
     @Test
+    @DisplayName("Get issue failed due to user not authorised")
     void getIssueFail() throws Exception {
         ExceptionBody response = new ExceptionBody("User not authorised!");
 
@@ -141,6 +156,7 @@ public class NulabControllerTest {
     }
 
     @Test
+    @DisplayName("Get issue failed due because issue not found")
     @WithMockJwtUser
     void getIssueFail2() throws Exception {
         String exceptionMessage = "Received response from Nulab: Not Found";
@@ -156,6 +172,7 @@ public class NulabControllerTest {
     }
 
     @Test
+    @DisplayName("Add issue successfully")
     @WithMockJwtUser
     void addIssue() throws Exception {
         IssueAddParamsDto params = IssueAddParamsDto.builder()
@@ -180,6 +197,7 @@ public class NulabControllerTest {
     }
 
     @Test
+    @DisplayName("Add issue failed due to user not authorised")
     void addIssueFail() throws Exception {
         ExceptionBody response = new ExceptionBody("User not authorised!");
 
@@ -195,6 +213,7 @@ public class NulabControllerTest {
     }
 
     @ParameterizedTest
+    @DisplayName("Add issue validation failed")
     @MethodSource("provideDataForNulabValidationFail")
     @WithMockJwtUser
     void addIssueValidationFail(IssueAddParamsDto params, Map<String, String> errors) throws Exception {

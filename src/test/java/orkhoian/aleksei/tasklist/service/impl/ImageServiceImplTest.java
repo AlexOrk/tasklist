@@ -13,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 import orkhoian.aleksei.tasklist.domain.exception.ImageUploadException;
-import orkhoian.aleksei.tasklist.domain.task.TaskImage;
 import orkhoian.aleksei.tasklist.service.props.MinioProperties;
 
 import java.io.ByteArrayInputStream;
@@ -42,14 +41,8 @@ public class ImageServiceImplTest {
     @InjectMocks
     private ImageServiceImpl imageService;
 
-    private TaskImage taskImage;
-
     @BeforeEach
     void setUp() {
-        taskImage = TaskImage.builder()
-            .file(multipartFile)
-            .build();
-
         when(minioProperties.getBucket()).thenReturn("test-bucket");
     }
 
@@ -65,7 +58,7 @@ public class ImageServiceImplTest {
         when(multipartFile.getInputStream()).thenReturn(inputStream);
         when(minioClient.putObject(any(PutObjectArgs.class))).thenReturn(null);
 
-        String actualFileName = imageService.upload(taskImage);
+        String actualFileName = imageService.upload(multipartFile);
 
         assertNotNull(actualFileName);
         assertTrue(actualFileName.endsWith(".jpg"));
@@ -78,18 +71,18 @@ public class ImageServiceImplTest {
     @DisplayName("Upload image failed while creating bucket")
     void uploadFail() {
         when(minioProperties.getBucket()).thenReturn(null);
-        assertThrows(ImageUploadException.class, () -> imageService.upload(taskImage));
+        assertThrows(ImageUploadException.class, () -> imageService.upload(multipartFile));
     }
 
     @Test
     @DisplayName("Upload image failed because images file is empty or does not contain original name")
     void uploadFail2() {
         when(multipartFile.isEmpty()).thenReturn(true);
-        assertThrows(ImageUploadException.class, () -> imageService.upload(taskImage));
+        assertThrows(ImageUploadException.class, () -> imageService.upload(multipartFile));
 
         when(multipartFile.isEmpty()).thenReturn(false);
         when(multipartFile.getOriginalFilename()).thenReturn(null);
-        assertThrows(ImageUploadException.class, () -> imageService.upload(taskImage));
+        assertThrows(ImageUploadException.class, () -> imageService.upload(multipartFile));
     }
 
     @SneakyThrows
@@ -101,7 +94,7 @@ public class ImageServiceImplTest {
         when(multipartFile.getOriginalFilename()).thenReturn("image.jpg");
         when(multipartFile.getInputStream()).thenThrow(new RuntimeException());
 
-        assertThrows(ImageUploadException.class, () -> imageService.upload(taskImage));
+        assertThrows(ImageUploadException.class, () -> imageService.upload(multipartFile));
     }
 
 }

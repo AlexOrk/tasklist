@@ -33,10 +33,10 @@ public final class Utils {
             LocalDate today = LocalDate.now();
 
             if (inputDate.isBefore(today)) {
-                throw new IllegalArgumentException("Invalid date. The date entered must be later than now.");
+                throw new IllegalArgumentException("Invalid date. The date entered must be later than now, but was " + date);
             }
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid date format. Expected yyyy-MM-dd.");
+            throw new IllegalArgumentException("Invalid date format. Expected yyyy-MM-dd, but was " + date);
         }
     }
 }

@@ -35,6 +35,10 @@ public class NulabClient {
         this.client = RestClient.create(uriBase);
     }
 
+    public NulabClient(RestClient client) {
+        this.client = client;
+    }
+
     public List<ProjectDto> getProjectList(String apiKey) {
 
         return client.get()

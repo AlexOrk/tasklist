@@ -29,6 +29,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class NulabServiceImplTest {
+
     @Mock
     private NulabClient nulabClient;
 
@@ -147,7 +148,7 @@ public class NulabServiceImplTest {
 
         assertThrows(ResponseStatusException.class, () -> nulabService.addIssue(apiKey, issue));
     }
-    
+
     @Test
     @DisplayName("Publish task in Nulab API successfully")
     void publishTaskInNulab() {

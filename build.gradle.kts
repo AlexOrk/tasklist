@@ -92,7 +92,7 @@ tasks {
 		violationRules {
 			rule {
 				limit {
-					minimum = BigDecimal.valueOf(0.1)
+					minimum = BigDecimal.valueOf(0.7)
 				}
 			}
 		}
